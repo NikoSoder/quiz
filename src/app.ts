@@ -1,7 +1,9 @@
 let question_DIV = document.querySelector('.question') as HTMLDivElement;
 let buttonAnswers = document.querySelectorAll<HTMLButtonElement>('.answer');
-const nextQuestionButton = document.getElementById('next-question') as HTMLButtonElement;
-let gameRound: number = 0;
+let questionNumber_p = document.getElementById('question-number') as HTMLParagraphElement;
+let gameRound: number = 0; 
+let questionNumber: number = 1; 
+let allData: QuestionList; 
 
 // get quiz data
 async function getData(): Promise<QuestionList> {
@@ -11,10 +13,12 @@ async function getData(): Promise<QuestionList> {
 }
 
 function useData(data: QuestionList) {
+    questionNumber_p.textContent = `Question ${questionNumber}/5`;  // show how many questions there are
+    questionNumber++;
+    allData = data;  // save data
     const questions = data.results;  // get all questions
     const correctAnswer: string = questions[gameRound].correct_answer;  // save correct answer 
     const answers: string[] = [];                                       // save all answers to this list
-    console.log(questions);
     question_DIV.innerHTML = questions[gameRound].question;
     answers.push(questions[gameRound].correct_answer);
     answers.push(...questions[gameRound].incorrect_answers);
@@ -23,31 +27,31 @@ function useData(data: QuestionList) {
     buttonAnswers.forEach(answer => {  // display answers
         answer.innerHTML = answers[i];
         i++
-        
     })
-    
-    buttonAnswers.forEach(button => {
-        button.addEventListener('click', () => {
-            // tsekkaa onko vastaus oikein 
-            // sen jälkeen loop uudestaan 
-            // gameRound++;
-            main();
-        });
-    })
-    
 }
+
+buttonAnswers.forEach(button => {
+    button.addEventListener('click', () => {
+        // tsekkaa onko vastaus oikein 
+        // sen jälkeen loop uudestaan 
+        console.log('click');
+        gameRound++;
+        main();
+    });
+})
 
 // main
 function main() {
+    // get all data first round
     if(gameRound === 0) {
-        const triviaData = getData();
+        let triviaData = getData();
         triviaData.then(function(triviaData) {
             useData(triviaData);
         });
+    // other rounds    
     } else {
-        useData(triviaData);  // FIX
+        useData(allData);
     }
-    
 }
 main();
 
