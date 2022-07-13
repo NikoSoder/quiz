@@ -12,6 +12,20 @@ body {
     background-color: rgb(92, 161, 196);
 }
 
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid black;
+    height: 500px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    position: relative;
+}
+/*
 .quiz-container {
     display: flex;
     justify-content: center;
@@ -26,6 +40,20 @@ body {
     position: relative;
 }
 
+.ending-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid black;
+    height: 500px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    position: relative;
+}
+*/
 .question {
     text-align: center;
     margin: 0px 20px 30px 20px;
@@ -54,4 +82,8 @@ body {
 .question-num {
    position: absolute;
    bottom: 420px;
+}
+
+.hidden {
+    display: none;
 }

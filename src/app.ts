@@ -1,9 +1,13 @@
+let questionContainer_DIV = document.querySelector('.quiz-container') as HTMLDivElement;  // quiz screen
+let endingContainer_DIV = document.querySelector('.ending-container') as HTMLDivElement;  // ending screen
 let question_DIV = document.querySelector('.question') as HTMLDivElement;
 let buttonAnswers = document.querySelectorAll<HTMLButtonElement>('.answer');
 let questionNumber_p = document.getElementById('question-number') as HTMLParagraphElement;
 let gameRound: number = 0; 
 let questionNumber: number = 1; 
 let allData: QuestionList; 
+let correctAnswer: string;
+let gamePoints: number = 0; 
 
 // get quiz data
 async function getData(): Promise<QuestionList> {
@@ -17,26 +21,40 @@ function useData(data: QuestionList) {
     questionNumber++;
     allData = data;  // save data
     const questions = data.results;  // get all questions
-    const correctAnswer: string = questions[gameRound].correct_answer;  // save correct answer 
-    const answers: string[] = [];                                       // save all answers to this list
+    correctAnswer = questions[gameRound].correct_answer;  // save correct answer 
+    const answers: string[] = [];                         // save all answers to this list
     question_DIV.innerHTML = questions[gameRound].question;
     answers.push(questions[gameRound].correct_answer);
     answers.push(...questions[gameRound].incorrect_answers);
+    shuffle(answers);
     
-    let i: number = 0;                 // this is for answers
+    let i: number = 0;                 
     buttonAnswers.forEach(answer => {  // display answers
         answer.innerHTML = answers[i];
         i++
     })
 }
 
+function shuffle(array: string[]) {         // shuffle answers 
+    array.sort(() => Math.random() - 0.5);
+}
+
 buttonAnswers.forEach(button => {
     button.addEventListener('click', () => {
         // tsekkaa onko vastaus oikein 
         // sen jälkeen loop uudestaan 
-        console.log('click');
-        gameRound++;
-        main();
+        if(questionNumber === 6) {  // if last question
+            questionContainer_DIV.classList.add('hidden');
+            endingContainer_DIV.classList.remove('hidden');
+            // lisää tavaraa loppu screenii 
+            // näytä pisteet
+            // play again button
+        } else {
+            gameRound++;
+            main();
+        }
+        
+        
     });
 })
 
