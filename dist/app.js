@@ -1,9 +1,15 @@
 "use strict";
+// TODO: lisää niin kun painaa oikeaa vastausta väri muuttu vihreäksi
+// ja toiste päin kun väärä vastaus nii punaiseksi
 let questionContainer_DIV = document.querySelector('.quiz-container'); // quiz screen
 let endingContainer_DIV = document.querySelector('.ending-container'); // ending screen
 let question_DIV = document.querySelector('.question');
 let buttonAnswers = document.querySelectorAll('.answer');
 let questionNumber_p = document.getElementById('question-number');
+let playAgainButton = document.getElementById('play-again-button');
+let result_p = document.getElementById('result');
+let loaderAnimation = document.querySelector('.loader');
+let loadingScreen_DIV = document.querySelector('.loading-screen');
 let gameRound = 0;
 let questionNumber = 1;
 let allData;
@@ -16,6 +22,9 @@ async function getData() {
     return await response.json();
 }
 function useData(data) {
+    loadingScreen_DIV.classList.add('hidden');
+    loaderAnimation.classList.add('hidden');
+    questionContainer_DIV.classList.remove('hidden');
     questionNumber_p.textContent = `Question ${questionNumber}/5`; // show how many questions there are
     questionNumber++;
     allData = data; // save data
@@ -37,20 +46,29 @@ function shuffle(array) {
 }
 buttonAnswers.forEach(button => {
     button.addEventListener('click', () => {
-        // tsekkaa onko vastaus oikein 
-        // sen jälkeen loop uudestaan 
         if (questionNumber === 6) { // if last question
+            if (button.innerHTML === correctAnswer)
+                gamePoints++;
             questionContainer_DIV.classList.add('hidden');
             endingContainer_DIV.classList.remove('hidden');
-            // lisää tavaraa loppu screenii 
-            // näytä pisteet
-            // play again button
+            result_p.textContent = `You got ${gamePoints}/5`;
+            gamePoints = 0;
+            questionNumber = 1;
+            gameRound = 0;
         }
         else {
+            if (button.innerHTML === correctAnswer)
+                gamePoints++;
             gameRound++;
             main();
         }
     });
+});
+playAgainButton.addEventListener('click', () => {
+    endingContainer_DIV.classList.add('hidden');
+    loadingScreen_DIV.classList.remove('hidden');
+    loaderAnimation.classList.remove('hidden');
+    main(); // gameRound is now 0 so it gets new questions
 });
 // main
 function main() {

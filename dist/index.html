@@ -20,13 +20,20 @@
         <p id="question-number">Question 1/5</p>
       </div>
       <div class="question"></div>
-      <button class="answer"></button>
-      <button class="answer"></button>
-      <button class="answer"></button>
-      <button class="answer"></button>
+      <button class="answer button-style"></button>
+      <button class="answer button-style"></button>
+      <button class="answer button-style"></button>
+      <button class="answer button-style"></button>
     </div>
     <!-- ENDING SCREEN -->
-    <div class="ending-container main-container hidden"></div>
+    <div class="ending-container main-container hidden">
+      <p id="result">You got 0/5</p>
+      <button id="play-again-button" class="button-style">Play again</button>
+    </div>
+    <!-- LOADING SCREEN -->
+    <div class="loading-screen main-container hidden">
+      <div class="loader hidden"></div>
+    </div>
     <!-- SCRIPT -->
     <script src="app.js" type="module"></script>
   </body>

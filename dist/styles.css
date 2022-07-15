@@ -25,54 +25,26 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     position: relative;
 }
-/*
+
 .quiz-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 1px solid black;
-    height: 500px;
-    width: 400px;
-    border-radius: 10px;
-    background-color: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    position: relative;
+    animation: quiz-animation 1.5s;
 }
 
-.ending-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 1px solid black;
-    height: 500px;
-    width: 400px;
-    border-radius: 10px;
-    background-color: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    position: relative;
+@keyframes quiz-animation {
+    0%{
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
 }
-*/
+
 .question {
     text-align: center;
     margin: 0px 20px 30px 20px;
     font-size: 20px;
-}
-
-.answer {
-    font-size: 18px;
-    width: 300px;
-    margin: 7px;
-    border: 1px solid black;
-    background-color: white;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-.answer:hover {
-    background-color: rgb(92, 161, 196);
 }
 
 #question-number {
@@ -87,3 +59,56 @@ body {
 .hidden {
     display: none;
 }
+
+#result {
+    font-size: 19px;  
+    margin: 0px 0px 40px 0px;  
+    animation: transform-animation 1s forwards;
+}
+
+.button-style {
+    font-size: 18px;
+    width: 300px;
+    margin: 7px;
+    border: 1px solid black;
+    background-color: white;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.button-style:hover {
+    background-color: rgb(92, 161, 196);
+}
+
+.loader {
+    border: 10px solid #f3f3f3; 
+    border-top: 10px solid rgb(92, 161, 196); 
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#play-again-button{
+    animation: transform-animation 1s forwards;
+}
+    
+@keyframes transform-animation {
+    0%{
+        opacity: 0;
+        transform: scale(0.5) translateY(-100px);
+       
+    }
+    100%{
+        transform: scale(1) translateX(0px);
+        opacity: 1;
+    }
+}
+
