@@ -1,5 +1,6 @@
-// TODO: lisää niin kun painaa oikeaa vastausta väri muuttu vihreäksi
-// ja toiste päin kun väärä vastaus nii punaiseksi
+// TODO: 1. lisää niin kun painaa oikeaa vastausta väri muuttu vihreäksi
+// ja toiste päin kun väärä vastaus nii punaiseksi.
+
 let questionContainer_DIV = document.querySelector('.quiz-container') as HTMLDivElement;  // quiz screen
 let endingContainer_DIV = document.querySelector('.ending-container') as HTMLDivElement;  // ending screen
 let question_DIV = document.querySelector('.question') as HTMLDivElement;
@@ -9,11 +10,15 @@ let playAgainButton = document.getElementById('play-again-button') as HTMLButton
 let result_p = document.getElementById('result') as HTMLParagraphElement;
 let loaderAnimation = document.querySelector('.loader') as HTMLDivElement;
 let loadingScreen_DIV = document.querySelector('.loading-screen') as HTMLDivElement;
+let timer_span = document.getElementById('timer') as HTMLSpanElement;
 let gameRound: number = 0; 
 let questionNumber: number = 1; 
 let allData: QuestionList; 
 let correctAnswer: string;
 let gamePoints: number = 0; 
+let Interval: number; // timer for questions
+let timer: any = 10; // timer variable
+let questionTimer: number;
 
 // get quiz data
 async function getData(): Promise<QuestionList> {
@@ -23,9 +28,15 @@ async function getData(): Promise<QuestionList> {
 }
 
 function useData(data: QuestionList) {
+    clearInterval(questionTimer);
+    timer = 10;
+    timer_span.innerHTML = timer;
+    questionTimer = setInterval(startTimer, 1000);
     loadingScreen_DIV.classList.add('hidden');
     loaderAnimation.classList.add('hidden');
     questionContainer_DIV.classList.remove('hidden');
+    
+
     questionNumber_p.textContent = `Question ${questionNumber}/5`;  // show how many questions there are
     questionNumber++;
     allData = data;  // save data
@@ -51,16 +62,11 @@ function shuffle(array: string[]) {         // shuffle answers
 buttonAnswers.forEach(button => {
     button.addEventListener('click', () => {
         if(questionNumber === 6) {  // if last question
-            if(button.innerHTML === correctAnswer) gamePoints++;
-            questionContainer_DIV.classList.add('hidden');
-            endingContainer_DIV.classList.remove('hidden');
-            result_p.textContent = `You got ${gamePoints}/5`;
-            gamePoints = 0;
-            questionNumber = 1;
-            gameRound = 0;
+            if(button.innerHTML === correctAnswer) gamePoints++;  // check for correct answer
+            endGame();
             
         } else {
-            if(button.innerHTML === correctAnswer) gamePoints++;
+            if(button.innerHTML === correctAnswer) gamePoints++;  // check for correct answer
             gameRound++;
             main();
         }
@@ -73,6 +79,34 @@ playAgainButton.addEventListener('click', () => {
     loaderAnimation.classList.remove('hidden');
     main(); // gameRound is now 0 so it gets new questions
 })
+
+function startTimer() {
+    if(timer === 0) {
+        if(questionNumber === 6) {  // if last question then show ending screen
+            endGame();
+        } else {                    // else show next question
+            clearInterval(questionTimer);
+            timer = 10;
+            main();
+        }
+    }
+    if(timer === 10) {
+        timer_span.innerHTML = timer;
+    } else {
+        timer_span.innerHTML = `0${timer}`;
+    }
+    timer--;
+}
+
+function endGame() {
+    clearInterval(questionTimer);
+    questionContainer_DIV.classList.add('hidden');
+    endingContainer_DIV.classList.remove('hidden');
+    result_p.textContent = `You got ${gamePoints}/5`;
+    gamePoints = 0;
+    questionNumber = 1;
+    gameRound = 0;
+}
 
 // main
 function main() {

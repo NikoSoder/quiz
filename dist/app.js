@@ -1,6 +1,6 @@
 "use strict";
-// TODO: lisää niin kun painaa oikeaa vastausta väri muuttu vihreäksi
-// ja toiste päin kun väärä vastaus nii punaiseksi
+// TODO: 1. lisää niin kun painaa oikeaa vastausta väri muuttu vihreäksi
+// ja toiste päin kun väärä vastaus nii punaiseksi.
 let questionContainer_DIV = document.querySelector('.quiz-container'); // quiz screen
 let endingContainer_DIV = document.querySelector('.ending-container'); // ending screen
 let question_DIV = document.querySelector('.question');
@@ -10,11 +10,15 @@ let playAgainButton = document.getElementById('play-again-button');
 let result_p = document.getElementById('result');
 let loaderAnimation = document.querySelector('.loader');
 let loadingScreen_DIV = document.querySelector('.loading-screen');
+let timer_span = document.getElementById('timer');
 let gameRound = 0;
 let questionNumber = 1;
 let allData;
 let correctAnswer;
 let gamePoints = 0;
+let Interval; // timer for questions
+let timer = 10; // timer variable
+let questionTimer;
 // get quiz data
 async function getData() {
     const API_URL = 'https://opentdb.com/api.php?amount=5&type=multiple';
@@ -22,6 +26,10 @@ async function getData() {
     return await response.json();
 }
 function useData(data) {
+    clearInterval(questionTimer);
+    timer = 10;
+    timer_span.innerHTML = timer;
+    questionTimer = setInterval(startTimer, 1000);
     loadingScreen_DIV.classList.add('hidden');
     loaderAnimation.classList.add('hidden');
     questionContainer_DIV.classList.remove('hidden');
@@ -48,17 +56,12 @@ buttonAnswers.forEach(button => {
     button.addEventListener('click', () => {
         if (questionNumber === 6) { // if last question
             if (button.innerHTML === correctAnswer)
-                gamePoints++;
-            questionContainer_DIV.classList.add('hidden');
-            endingContainer_DIV.classList.remove('hidden');
-            result_p.textContent = `You got ${gamePoints}/5`;
-            gamePoints = 0;
-            questionNumber = 1;
-            gameRound = 0;
+                gamePoints++; // check for correct answer
+            endGame();
         }
         else {
             if (button.innerHTML === correctAnswer)
-                gamePoints++;
+                gamePoints++; // check for correct answer
             gameRound++;
             main();
         }
@@ -70,6 +73,34 @@ playAgainButton.addEventListener('click', () => {
     loaderAnimation.classList.remove('hidden');
     main(); // gameRound is now 0 so it gets new questions
 });
+function startTimer() {
+    if (timer === 0) {
+        if (questionNumber === 6) { // if last question then show ending screen
+            endGame();
+        }
+        else { // else show next question
+            clearInterval(questionTimer);
+            timer = 10;
+            main();
+        }
+    }
+    if (timer === 10) {
+        timer_span.innerHTML = timer;
+    }
+    else {
+        timer_span.innerHTML = `0${timer}`;
+    }
+    timer--;
+}
+function endGame() {
+    clearInterval(questionTimer);
+    questionContainer_DIV.classList.add('hidden');
+    endingContainer_DIV.classList.remove('hidden');
+    result_p.textContent = `You got ${gamePoints}/5`;
+    gamePoints = 0;
+    questionNumber = 1;
+    gameRound = 0;
+}
 // main
 function main() {
     // get all data first round

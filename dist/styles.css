@@ -47,13 +47,8 @@ body {
     font-size: 20px;
 }
 
-#question-number {
-    font-size: 19px;    
-}
-
 .question-num {
-   position: absolute;
-   bottom: 420px;
+   margin-right: 40px;
 }
 
 .hidden {
@@ -79,6 +74,18 @@ body {
 
 .button-style:hover {
     background-color: rgb(92, 161, 196);
+}
+
+.quiz-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    position: absolute;
+    bottom: 420px;
+    border: 1px solid black;
+    padding: 0px 30px 0px 30px;
+    border-radius: 5px;
 }
 
 .loader {
@@ -111,4 +118,13 @@ body {
         opacity: 1;
     }
 }
+
+#timer {
+    background-color: rgb(92, 161, 196);
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+
 
