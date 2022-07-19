@@ -1,6 +1,5 @@
 "use strict";
-// TODO: 1. lisää niin kun painaa oikeaa vastausta väri muuttu vihreäksi
-// ja toiste päin kun väärä vastaus nii punaiseksi.
+// TODO: korjaa jos vastaa kun yksi sekuntti aikaa
 let questionContainer_DIV = document.querySelector('.quiz-container'); // quiz screen
 let endingContainer_DIV = document.querySelector('.ending-container'); // ending screen
 let question_DIV = document.querySelector('.question');
@@ -19,6 +18,7 @@ let gamePoints = 0;
 let Interval; // timer for questions
 let timer = 10; // timer variable
 let questionTimer;
+let buttonClicked = false;
 // get quiz data
 async function getData() {
     const API_URL = 'https://opentdb.com/api.php?amount=5&type=multiple';
@@ -26,10 +26,12 @@ async function getData() {
     return await response.json();
 }
 function useData(data) {
+    buttonClicked = false;
+    removeClass();
     clearInterval(questionTimer);
     timer = 10;
     timer_span.innerHTML = timer;
-    questionTimer = setInterval(startTimer, 1000);
+    questionTimer = setInterval(startQuizTimer, 1000);
     loadingScreen_DIV.classList.add('hidden');
     loaderAnimation.classList.add('hidden');
     questionContainer_DIV.classList.remove('hidden');
@@ -49,21 +51,44 @@ function useData(data) {
         i++;
     });
 }
+function removeClass() {
+    buttonAnswers.forEach(answer => {
+        answer.classList.remove('right-answer', 'wrong-answer');
+    });
+}
 function shuffle(array) {
     array.sort(() => Math.random() - 0.5);
 }
 buttonAnswers.forEach(button => {
     button.addEventListener('click', () => {
+        if (buttonClicked)
+            return; // if button already clicked then return
+        buttonClicked = true;
         if (questionNumber === 6) { // if last question
-            if (button.innerHTML === correctAnswer)
-                gamePoints++; // check for correct answer
-            endGame();
+            if (button.innerHTML === correctAnswer) { // check for correct answer
+                button.classList.add('right-answer');
+                gamePoints++;
+                const showEndingScreen = setTimeout(endQuiz, 1500);
+            }
+            else { // if wrong answer
+                button.classList.add('wrong-answer');
+                //endQuiz();
+                const showEndingScreen = setTimeout(endQuiz, 1500);
+            }
         }
-        else {
-            if (button.innerHTML === correctAnswer)
-                gamePoints++; // check for correct answer
-            gameRound++;
-            main();
+        else { // if not last question
+            if (button.innerHTML === correctAnswer) { // check for correct answer
+                button.classList.add('right-answer');
+                gamePoints++;
+                gameRound++;
+                const showNextQuestion = setTimeout(main, 1500);
+            }
+            else { // if wrong answer 
+                button.classList.add('wrong-answer');
+                gameRound++;
+                const showNextQuestion = setTimeout(main, 1500);
+                //main();
+            }
         }
     });
 });
@@ -73,10 +98,10 @@ playAgainButton.addEventListener('click', () => {
     loaderAnimation.classList.remove('hidden');
     main(); // gameRound is now 0 so it gets new questions
 });
-function startTimer() {
+function startQuizTimer() {
     if (timer === 0) {
         if (questionNumber === 6) { // if last question then show ending screen
-            endGame();
+            endQuiz();
         }
         else { // else show next question
             clearInterval(questionTimer);
@@ -92,7 +117,7 @@ function startTimer() {
     }
     timer--;
 }
-function endGame() {
+function endQuiz() {
     clearInterval(questionTimer);
     questionContainer_DIV.classList.add('hidden');
     endingContainer_DIV.classList.remove('hidden');
