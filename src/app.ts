@@ -1,4 +1,7 @@
-// TODO: korjaa jos vastaa kun yksi sekuntti aikaa
+// TODO: 
+// 
+
+// starting screen ja play button -> laskuri 3 2 1 plus animaatio numeroihin 
 
 let questionContainer_DIV = document.querySelector('.quiz-container') as HTMLDivElement;  // quiz screen
 let endingContainer_DIV = document.querySelector('.ending-container') as HTMLDivElement;  // ending screen
@@ -68,7 +71,7 @@ function shuffle(array: string[]) {         // shuffle answers
 }
 
 buttonAnswers.forEach(button => {
-    button.addEventListener('click', () => {
+   button.addEventListener('click', () => {
         if(buttonClicked) return;  // if button already clicked then return
 
         buttonClicked = true;
@@ -79,10 +82,9 @@ buttonAnswers.forEach(button => {
                 const showEndingScreen = setTimeout(endQuiz, 1500);  
             } else {  // if wrong answer
                 button.classList.add('wrong-answer');
-                //endQuiz();
+                showRightAnswer();
                 const showEndingScreen = setTimeout(endQuiz, 1500);
             }
-            
             
         } else {  // if not last question
             if(button.innerHTML === correctAnswer) {  // check for correct answer
@@ -92,13 +94,19 @@ buttonAnswers.forEach(button => {
                 const showNextQuestion = setTimeout(main, 1500);
             } else {  // if wrong answer 
                 button.classList.add('wrong-answer');
+                showRightAnswer();
                 gameRound++;
                 const showNextQuestion = setTimeout(main, 1500);
-                //main();
             }
         }
     });
 })
+
+function showRightAnswer() {
+    buttonAnswers.forEach(button => {    
+        if(button.innerHTML === correctAnswer) button.classList.add('right-answer');
+    });
+}
 
 playAgainButton.addEventListener('click', () => {
     endingContainer_DIV.classList.add('hidden');
@@ -108,13 +116,19 @@ playAgainButton.addEventListener('click', () => {
 })
 
 function startQuizTimer() {
+    if(buttonClicked) return;  // if user already clicked answer then stop the timer
     if(timer === 0) {
         if(questionNumber === 6) {  // if last question then show ending screen
-            endQuiz();
+            clearInterval(questionTimer);
+            showRightAnswer();
+            const showEndingScreen = setTimeout(endQuiz, 1500);
+            //endQuiz();
         } else {                    // else show next question
             clearInterval(questionTimer);
+            showRightAnswer();
+            const showNextQuestion = setTimeout(main, 1500);
             timer = 10;
-            main();
+            //main();
         }
     }
     if(timer === 10) {
