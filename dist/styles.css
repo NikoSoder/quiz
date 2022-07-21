@@ -12,6 +12,44 @@ body {
     background-color: rgb(92, 161, 196);
 }
 
+.starting-container h2 {
+    margin: 40px;
+    animation: h2-animation 3s ease-in-out;
+}
+
+@keyframes h2-animation {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+#start-game-button {
+    animation: start-game-button-animation 3s 1500ms forwards;
+    opacity: 0;
+}
+
+@keyframes start-game-button-animation {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+#start-game-button:hover {
+    background-color: rgb(92, 161, 196);
+}
+
+#countdown {
+    font-size: 40px;
+}
+
+.countdown {
+    animation: countdown-animation 800ms;
+}
+
+@keyframes countdown-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+
 .main-container {
     display: flex;
     justify-content: center;
@@ -155,4 +193,13 @@ body {
     100% { transform: scale(1); }
 }
 
+.show-right-answer {
+    background-color: rgb(66, 154, 66);
+    animation: show-answer 500ms;
+}
 
+@keyframes show-answer {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}

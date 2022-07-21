@@ -1,7 +1,9 @@
 "use strict";
 // TODO: 
 // 
-// starting screen ja play button -> laskuri 3 2 1 plus animaatio numeroihin 
+// 
+let startGameContainer_DIV = document.querySelector('.starting-container'); // starting screen
+let countdownContainer_Div = document.querySelector('.countdown-container'); // countdown screen
 let questionContainer_DIV = document.querySelector('.quiz-container'); // quiz screen
 let endingContainer_DIV = document.querySelector('.ending-container'); // ending screen
 let question_DIV = document.querySelector('.question');
@@ -12,15 +14,40 @@ let result_p = document.getElementById('result');
 let loaderAnimation = document.querySelector('.loader');
 let loadingScreen_DIV = document.querySelector('.loading-screen');
 let timer_span = document.getElementById('timer');
+let startGameButton = document.getElementById('start-game-button');
+let countdown_p = document.getElementById('countdown');
 let gameRound = 0;
 let questionNumber = 1;
 let allData;
 let correctAnswer;
 let gamePoints = 0;
 let Interval; // timer for questions
-let timer = 10; // timer variable
+let timer = 15; // question timer 
 let questionTimer;
 let buttonClicked = false;
+let countdownTimer = 3;
+let startGameTimer;
+startGameButton.addEventListener('click', () => {
+    startGameTimer = setInterval(startGameCountdown, 1000);
+    startGameContainer_DIV.classList.add('hidden');
+    countdownContainer_Div.classList.remove('hidden');
+});
+function startGameCountdown() {
+    if (countdownTimer === 0) {
+        clearInterval(startGameTimer);
+        countdownContainer_Div.classList.add('hidden');
+        loadingScreen_DIV.classList.remove('hidden');
+        loaderAnimation.classList.remove('hidden');
+        main();
+    }
+    countdown_p.classList.add('countdown');
+    countdown_p.textContent = countdownTimer;
+    countdownTimer--;
+    const removeTimerAnimation = setTimeout(removeAnimation, 800);
+}
+function removeAnimation() {
+    countdown_p.classList.remove('countdown');
+}
 // get quiz data
 async function getData() {
     const API_URL = 'https://opentdb.com/api.php?amount=5&type=multiple';
@@ -31,7 +58,7 @@ function useData(data) {
     buttonClicked = false;
     removeClass();
     clearInterval(questionTimer);
-    timer = 10;
+    timer = 15;
     timer_span.innerHTML = timer;
     questionTimer = setInterval(startQuizTimer, 1000);
     loadingScreen_DIV.classList.add('hidden');
@@ -55,7 +82,7 @@ function useData(data) {
 }
 function removeClass() {
     buttonAnswers.forEach(answer => {
-        answer.classList.remove('right-answer', 'wrong-answer');
+        answer.classList.remove('right-answer', 'wrong-answer', 'show-right-answer');
     });
 }
 function shuffle(array) {
@@ -97,7 +124,7 @@ buttonAnswers.forEach(button => {
 function showRightAnswer() {
     buttonAnswers.forEach(button => {
         if (button.innerHTML === correctAnswer)
-            button.classList.add('right-answer');
+            button.classList.add('show-right-answer');
     });
 }
 playAgainButton.addEventListener('click', () => {
@@ -114,17 +141,15 @@ function startQuizTimer() {
             clearInterval(questionTimer);
             showRightAnswer();
             const showEndingScreen = setTimeout(endQuiz, 1500);
-            //endQuiz();
         }
         else { // else show next question
             clearInterval(questionTimer);
             showRightAnswer();
             const showNextQuestion = setTimeout(main, 1500);
-            timer = 10;
-            //main();
+            timer = 15;
         }
     }
-    if (timer === 10) {
+    if (timer >= 10) {
         timer_span.innerHTML = timer;
     }
     else {
@@ -136,7 +161,7 @@ function endQuiz() {
     clearInterval(questionTimer);
     questionContainer_DIV.classList.add('hidden');
     endingContainer_DIV.classList.remove('hidden');
-    result_p.textContent = `You got ${gamePoints}/5`;
+    result_p.textContent = `${gamePoints}/5`;
     gamePoints = 0;
     questionNumber = 1;
     gameRound = 0;
@@ -155,4 +180,3 @@ function main() {
         useData(allData);
     }
 }
-main();

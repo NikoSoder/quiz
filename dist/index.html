@@ -14,8 +14,17 @@
     />
   </head>
   <body>
+    <!-- START GAME -->
+    <div class="starting-container main-container">
+      <h2>Welcome to trivia quiz</h2>
+      <button class="button-style" id="start-game-button">Start game</button>
+    </div>
+    <!-- COUNTDOWN -->
+    <div class="countdown-container main-container hidden">
+      <p id="countdown"></p>
+    </div>
     <!-- QUIZ -->
-    <div class="quiz-container main-container">
+    <div class="quiz-container main-container hidden">
       <div class="quiz-info">
         <div class="question-num">
           <p id="question-number">Question 1/5</p>
@@ -33,7 +42,7 @@
     </div>
     <!-- ENDING SCREEN -->
     <div class="ending-container main-container hidden">
-      <p id="result">You got 0/5</p>
+      <p id="result"></p>
       <button id="play-again-button" class="button-style">Play again</button>
     </div>
     <!-- LOADING SCREEN -->
