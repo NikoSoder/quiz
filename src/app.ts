@@ -16,12 +16,13 @@ let loadingScreen_DIV = document.querySelector('.loading-screen') as HTMLDivElem
 let timer_span = document.getElementById('timer') as HTMLSpanElement;
 let startGameButton = document.getElementById('start-game-button') as HTMLButtonElement;
 let countdown_p = document.getElementById('countdown') as HTMLParagraphElement;
-let gameRound: number = 0; 
-let questionNumber: number = 1; 
+let timerBar_Div = document.querySelector('.timer-bar') as HTMLDivElement;
+let gameRound = 0; 
+let questionNumber = 1; 
 let allData: QuestionList; 
 let correctAnswer: string;
-let gamePoints: number = 0; 
-let Interval: number; // timer for questions
+let gamePoints = 0; 
+//let Interval: number; // timer for questions
 let timer: any = 15; // question timer 
 let questionTimer: number;
 let buttonClicked: boolean = false;
@@ -68,6 +69,7 @@ function useData(data: QuestionList) {
     timer = 15;
     timer_span.innerHTML = timer;
     questionTimer = setInterval(startQuizTimer, 1000);
+    timerBar_Div.classList.add('timer-bar-animation');
     loadingScreen_DIV.classList.add('hidden');
     loaderAnimation.classList.add('hidden');
     questionContainer_DIV.classList.remove('hidden');
@@ -109,10 +111,12 @@ buttonAnswers.forEach(button => {
         if(questionNumber === 6) {  // if last question
             if(button.innerHTML === correctAnswer) {  // check for correct answer
                 button.classList.add('right-answer');
+                timerBar_Div.classList.remove('timer-bar-animation');
                 gamePoints++;
                 const showEndingScreen = setTimeout(endQuiz, 1500);  
             } else {  // if wrong answer
                 button.classList.add('wrong-answer');
+                timerBar_Div.classList.remove('timer-bar-animation');
                 showRightAnswer();
                 const showEndingScreen = setTimeout(endQuiz, 1500);
             }
@@ -120,11 +124,13 @@ buttonAnswers.forEach(button => {
         } else {  // if not last question
             if(button.innerHTML === correctAnswer) {  // check for correct answer
                 button.classList.add('right-answer');
+                timerBar_Div.classList.remove('timer-bar-animation');
                 gamePoints++; 
                 gameRound++;
                 const showNextQuestion = setTimeout(main, 1500);
             } else {  // if wrong answer 
                 button.classList.add('wrong-answer');
+                timerBar_Div.classList.remove('timer-bar-animation');
                 showRightAnswer();
                 gameRound++;
                 const showNextQuestion = setTimeout(main, 1500);
@@ -157,6 +163,7 @@ function startQuizTimer() {
         } else {                    // else show next question
             clearInterval(questionTimer);
             showRightAnswer();
+            timerBar_Div.classList.remove('timer-bar-animation');
             const showNextQuestion = setTimeout(main, 1500);
             timer = 15;
         }

@@ -34,7 +34,7 @@ body {
 }
 
 #start-game-button:hover {
-    background: linear-gradient(240deg, rgba(238,174,202,1) 0%, rgb(92, 161, 196) 100%);
+    background-color: rgb(92, 161, 196);
 }
 
 #countdown {
@@ -55,6 +55,30 @@ body {
         transform: scale(1); 
         opacity: 1;
     }
+}
+
+.timer-bar-container {
+    height: 9px;
+    border-radius: 5px;
+    width: 269px; 
+    background-color: rgb(234, 190, 190);
+    position: absolute;
+    bottom: 403px;
+}
+
+.timer-bar-container .timer-bar {
+    border-radius: 5px;
+    height: 100%;
+    background-color: rgb(92, 161, 196);
+}
+
+.timer-bar-animation {
+    animation: timer-animation 16s linear reverse; 
+}
+
+@keyframes timer-animation {
+    0%{ width: 0%; }
+    100%{ width: 100%; }
 }
 
 .main-container {
@@ -149,7 +173,7 @@ body {
 }
 
 #play-again-button:hover {
-    background: linear-gradient(240deg, rgba(238,174,202,1) 0%, rgb(92, 161, 196) 100%);
+    background-color: rgb(92, 161, 196);
 }
     
 @keyframes transform-animation {
