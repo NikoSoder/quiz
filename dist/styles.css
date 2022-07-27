@@ -9,7 +9,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /*background-color: rgb(92, 161, 196);*/
     background: linear-gradient(90deg, rgba(238,174,202,1) 0%, rgb(92, 161, 196) 100%);
 }
 

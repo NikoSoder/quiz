@@ -1,7 +1,3 @@
-// TODO: 
-// 
-
-// 
 let startGameContainer_DIV = document.querySelector('.starting-container') as HTMLDivElement; // starting screen
 let countdownContainer_Div = document.querySelector('.countdown-container') as HTMLDivElement // countdown screen
 let questionContainer_DIV = document.querySelector('.quiz-container') as HTMLDivElement;  // quiz screen
@@ -22,7 +18,6 @@ let questionNumber = 1;
 let allData: QuestionList; 
 let correctAnswer: string;
 let gamePoints = 0; 
-//let Interval: number; // timer for questions
 let timer: any = 15; // question timer 
 let questionTimer: number;
 let buttonClicked: boolean = false;

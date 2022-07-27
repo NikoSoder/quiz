@@ -1,7 +1,4 @@
 "use strict";
-// TODO: 
-// 
-// 
 let startGameContainer_DIV = document.querySelector('.starting-container'); // starting screen
 let countdownContainer_Div = document.querySelector('.countdown-container'); // countdown screen
 let questionContainer_DIV = document.querySelector('.quiz-container'); // quiz screen
@@ -22,7 +19,6 @@ let questionNumber = 1;
 let allData;
 let correctAnswer;
 let gamePoints = 0;
-//let Interval: number; // timer for questions
 let timer = 15; // question timer 
 let questionTimer;
 let buttonClicked = false;
